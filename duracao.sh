@@ -22,4 +22,4 @@ for video in $(ls *.mp4); do
   total=$( echo $total + $duracao | bc )   
 done
 
-echo "Total de: $( echo "scale=2; $total / 60 / 60" | bc -l ) horas/minutos"
+echo "Total de: $( echo "scale=2; $total / 60 / 60" | bc -l )"
