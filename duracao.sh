@@ -14,22 +14,27 @@
 # Exemplo: sudo ln -s $HOME/scripts/duracao.sh /usr/local/bin/duracao
 
 #-------------------VARIÁVEIS
+# Cores
+verde="\033[32;1m"
+tira_cor="\033[m"
 
-usage="
+help="
   ======= [OPÇÕES] =======
-
-  -h - Help                   |   duracao -h
-  -v - Versão                 |   duracao -v
-  -s - Soma apenas um vídeo   |   duracao -u <Nome_do_Video>
-  -t - Soma Total             |   duracao -t
+  -h - Help
+  -v - Versão
+  -s - Soma apenas um vídeo
+  -t - Soma Total
 "
 total=0
 
-versao="Versão 1.0.1"
+versao="Versão 1.2"
 
 #-------------------FUNÇÕES
 
 SOMA_TOTAL(){
+  echo -e "Fazendo a soma total..................."
+  sleep 1s
+
   shopt -s nullglob
     for video in *.mp4; do
       duracao=$(ffprobe -i $video -show_entries format=duration -v quiet -of csv="p=0")
@@ -37,19 +42,15 @@ SOMA_TOTAL(){
     done
   shopt -u nullglob
 
-  echo "Total de: $( echo "scale=2; $total / 60 / 60" | bc -l ) horas de vídeo"
+  echo -e "Total de: $( echo "scale=2; $total / 60 / 60" | bc -l ) horas de vídeo"
 }
 
 SOMA_MINUTOS(){
-  echo -e "Vídeos disponíveis\n$(ls *.mp4)\n"
-  read -p "Informe o nome do vídeo MP4: " video #Entrada do usuário
+  echo -e "${verde}Vídeos disponíveis:${tira_cor}\n$(ls *.mp4)\n" # Titulo da saída na tela
+  read -p "Informe o nome do vídeo MP4: " video # Entrada do usuário
 
-    if [ -z "$video" ];then
-      echo "Não válido, Informe o nome do vídeo" && exit 1
-    else
-      duracao=$(ffprobe -i $video -show_entries format=duration -v quiet -of csv="p=0")
-      echo -e "\nTotal de: $(echo "scale=2; $duracao/60"| bc -l) minutos de vídeo"
-    fi
+  duracao=$(ffprobe -i $video -show_entries format=duration -v quiet -of csv="p=0")
+  [ -z "$duracao" ] && { echo "Não válido"; exit 1 ; } || { echo -e "O vídeo ${verde}$video${tira_cor} tem $(echo "scale=2; $duracao/60"| bc -l) minutos"; exit 0 ; }
 }
 
 #-------------------TESTES
@@ -57,12 +58,15 @@ SOMA_MINUTOS(){
 [ ! -x "$(type -P ffprobe)" ] && echo -e "Depende do pacote ffprobe. Este pacote vem junto com a instalação do ffmpeg,\nExecute 'sudo apt install ffmpeg'" && exit 1 #ffprobe instalado? 
 
 #-------------------EXECUÇÃO
-
+while test -n "$1"; do
   case "$1" in
-    -h) echo "$usage" && exit 0                                   ;;
+    -h) echo "$help" && exit 0                                    ;;
     -v) echo "$versao" && exit 0                                  ;;
-    -s) SOMA_MINUTOS                                              ;;
-    -t) SOMA_TOTAL                                                ;;
-     *) echo "Opção inválida, vallie o -h para ajuda." && exit 1  ;;
+    -s) SOMA_MINUTOS && exit 0                                    ;;
+    -t) SOMA_TOTAL && exit 0                                      ;;
+     *) echo "Opção inválida, valie o -h para ajuda." && exit 1   ;;
   esac
   shift
+done
+
+echo "Olá $USER valie o -h para ajuda"
