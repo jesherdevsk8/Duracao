@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 # 
-# duracao.sh - Soma total horas de vídeos em umm diretório
-# Autor: Jesher Minelli | github: jesherdevsk8/duracao 
-# Data: 06-03-2022
-# Versões: 
-#       1.0 (inicial) - [ Jesher Minelli: é um fork do script do Mateus Muller ]       
-#       1.0.1 - [ Adicionado um globbing direto com a opção nullglob ligada para evitar
-#               interrupção do programa caso o glob não retorne arquivos.] Data - ( 12-03-2022 )
-#                     
-# Bash: versão 5.0.17
-#
+# duracao.sh - É um programa que faz a soma de tempo dos vídeos em um diretório
+# Autor: Jesher Minelli | https://github.com/jesherdevsk8/Duracao 
+# Criação: 06-03-2022
+# -------------
+# Histórico:
+#  v1.0 06/03/2022 Jesher (inicial):
+#       - É um fork do script do Mateus Muller       
+#  v1.0.1 12/03/2022 Jesher:
+#       - Adicionado um globbing direto com a opção nullglob ligada para evitar
+#         interrupção do programa caso o glob não retorne arquivos.
+#  v1.2 13/03/2022 Jesher:
+#       - Adicionado funções para cara parametro informados no menu
+#                  
+# Testado em:
+#   bash versão 5.0.17
+# -------------
 # Obs: CRIE UM LINK SIMBÓLICO PARA TORNA-LO EXECUTÁVEL EM QUALQUER DIRETÓRIO
 # Exemplo: sudo ln -s $HOME/scripts/duracao.sh /usr/local/bin/duracao
 
